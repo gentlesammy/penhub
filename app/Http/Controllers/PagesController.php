@@ -13,7 +13,7 @@ class PagesController extends Controller
     public function index(){
 
         //category
-        $categories =DB::table('Series')
+        $categories =DB::table('series')
                      ->select('category_id', DB::raw('count(*) as category_count'))
                      ->groupBy('category_id')
                      ->orderBy('category_count', 'desc')
