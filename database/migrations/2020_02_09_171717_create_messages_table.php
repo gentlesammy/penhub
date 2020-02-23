@@ -22,7 +22,6 @@ class CreateMessagesTable extends Migration
             $table->unsignedInteger('read')->default(0);
             $table->unsignedInteger('archieved')->default(0);
             $table->unsignedInteger('important')->default(0);
-            $table->renameColumn('important', 'vital');
             $table->timestamps();
         });
     }
