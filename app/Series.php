@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Series extends Model
 {
     //
-    public $table ="series";
+    protected $table ="Series";
 
     //relationship with user
     public function user(){

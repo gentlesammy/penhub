@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Episode extends Model
 {
+
+    protected $table ="Episodes";
     //rel with series
     public function series(){
         return $this->belongsTo(Series::class);
