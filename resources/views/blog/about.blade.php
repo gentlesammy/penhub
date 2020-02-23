@@ -18,10 +18,13 @@
             <div class="imgcont" style="width:300px; height:300px; border-radius:50%; overflow:hidden;">
                 <img src="img/samodunladeOpeyemi.jpeg" alt="" class="">
               </div>
-            <h1 class="">OPEYEMI MI OWON</h1>
+            <h1 class="text-center">OPEYEMI MI OWON</h1>
             <p class="pb-5">I just want to tell you that i missssss you,
                 i cant wait to see you back at home
                 kisseeeeeeeeeeeeeeeesssssssssssssss
+            </p>
+            <p>
+                And By the way, it feels like a year that i have seen u last....
             </p>
            </div>
 
