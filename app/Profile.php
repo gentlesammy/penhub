@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
 {
+
+
+    protected $table ="Profiles";
+
     //relationship with user
     public function user()
     {
