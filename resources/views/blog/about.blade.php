@@ -18,7 +18,7 @@
             <div class="imgcont" style="width:300px; height:300px; border-radius:50%; overflow:hidden;box-shadow: 0px 10px 14px 0px rgba(0, 0, 0, 0.25)">
                 <img src="img/samodunladeOpeyemi.jpeg" alt="" class="" >
                 <p>My Queen.. my world</p>
-                <p>chai.. i don suffer oo</p>
+                <p>I LOVE YOU BABY</p>
             </div>
             <div>
                     <h1 class="text-center">OPEYEMI MI OWON</h1>

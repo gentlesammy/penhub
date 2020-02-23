@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class EpisodesController extends Controller
 {
     public function index(){
-        $episodes = Episode::all()->paginate(10);
+        $episodes = Episode::where('published', 0)->get();
         return view('blog.episodes.index', compact('episodes'));
 
     }
