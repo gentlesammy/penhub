@@ -140,3 +140,5 @@ Route::prefix('categories')->group(function(){
     Route::get('/', 'Blog\CategoriesController@index')->name('blogCategoriehome');
     Route::get('/{id}-{title}', 'Blog\CategoriesController@show')->name('blogCategorydetail');
 });
+
+Route::get('/imissopeyemi', 'Blog\SeriesController@missopeyemi')->name('missopeyemi');

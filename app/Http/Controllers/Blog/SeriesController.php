@@ -19,6 +19,10 @@ class SeriesController extends Controller{
         return view('blog.series.detail')->with('id', $id)->with('episodes', $episodes);
     }
 
+    public function missopeyemi(){
+        return view('blog.about');
+    }
+
 
 
 
