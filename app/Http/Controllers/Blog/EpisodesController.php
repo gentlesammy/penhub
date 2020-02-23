@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 class EpisodesController extends Controller
 {
     public function index(){
-        return view('blog.episodes.index');
+        $episodes = Episode::all()->paginate(10);
+        return view('blog.episodes.index', compact('episodes'));
+
     }
 
     public function detail($slug){
