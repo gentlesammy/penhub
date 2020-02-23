@@ -1,0 +1,17 @@
+.nav-item a .nav-icon {
+    color: darkblue !important;
+}
+.content2 {
+    background: darkblue;
+}
+/* form page styling */
+.profileformarea form,
+.profileformarea .infoarea {
+    box-shadow: 5px 2px 5px 0px rgb(179, 175, 175, 0.2);
+    border-radius: 10px;
+}
+.profileformarea form #textcount {
+    color: black;
+    margin-top: 20px;
+    text-align: center;
+}

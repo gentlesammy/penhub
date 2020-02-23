@@ -1,0 +1,20 @@
+.sidelinks {
+    position: absolute;
+    top: 60px;
+    min-width: 100px;
+    background: lightgray;
+    padding-left: 20px;
+    height: 400px;
+}
+.sidelinks ul {
+    display: block;
+    padding-top: 50px;
+}
+.sidelinks ul li {
+    margin-bottom: 10px;
+}
+.sidelinks ul li a {
+    padding: 20px;
+    font-size: 1.5em;
+    height: 50px;
+}
