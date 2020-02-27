@@ -17,7 +17,7 @@
                 <p>Whatever your appetite is, be it juicy stories or series, short readings or tutorials, simply go to the section and you will have your fill,
                     Myself and guest writers are all at your service.
                 </p>
-                <button class="btnone">View Categories</button>
+                <a href="/series" class="btn btn-default">VIEW SERIES</a>
 
             </div>
 
@@ -44,7 +44,7 @@
                          <img src="./img/series/{{$se->feature}}" alt="odunlade sam blog">
                         </div>
                         <div class="textbox">
-                        <a href="http://" class="btn-sudo">{{$se->Category->title}}</a> &nbsp; Created {{$se->created_at}}
+                            <a href="/categories/{{$se->Category->id}}-{{$se->Category->title}}" class="btn-sudo">{{$se->Category->title}}</a> &nbsp; Created {{$se->created_at->format('d M, Y')}}
                             <h2>{{$se->title}}</h2>
                             <p>
                                 {{$se->summary}}
@@ -69,7 +69,7 @@
                                 <img src="./img/episodes/{{$epi->feature}}" alt="odunlade sam blog" class="img img-fluid">
                             </div>
                             <div class="textbox">
-                                <a href="http://" class="btn-sudo">{{$epi->Series->Category->title}}</a> &nbsp; Published: {{$epi->created_at}}
+                                <a href="/categories/{{$epi->Series->Category->id}}-{{$epi->Series->Category->title}}" class="btn-sudo" title="Category">{{$epi->Series->Category->title}}</a> &nbsp; Published: {{$epi->created_at}}
                             <h2>{{$epi->title}}</h2>
                                 <p>
                                     {{str_limit($epi->body, 220)}}
@@ -106,7 +106,8 @@
                     <!--list categories and number -->
                         <h3>Active Categories</h3>
                         @foreach ($categories as $cat)
-                        <p style="display:flex; flex-direction:row; justify-content:space-between; align-items:center"><a href="#" style="flex:1">{{App\Category::getCategoryname($cat->category_id)}}</a> &nbsp; <span class="badge badge-primary badge-pill" >{{$cat->category_count}}</span></p>
+                        <p style="display:flex; flex-direction:row; justify-content:space-between; align-items:center">
+                            <a href="/categories/{{$cat->category_id}}-{{App\Category::getCategoryname($cat->category_id)}}" style="flex:1">{{App\Category::getCategoryname($cat->category_id)}}</a> &nbsp; <span class="badge badge-primary badge-pill" >{{$cat->category_count}}</span></p>
 
                         @endforeach
                     </div>
@@ -114,7 +115,7 @@
                     <div class="p-left p-top p-bottom p-right shortepisodebox">
                         <h3>Latest Episodes</h3>
                         @foreach ($episodesall as $epi)
-                            <a href="">
+                            <a href="{{Route('blogEpisodedetail', ['slug'=>$epi->slug])}}">
                                 <div class="box">
 
                                     <img src="./img/episodes/{{$epi->feature}}" alt="odunlade sam blog" class="img img-fluid">

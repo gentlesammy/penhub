@@ -15,6 +15,7 @@ Route::get('/', 'PagesController@index')->name('blogindex');
 Route::get('/about', 'PagesController@about')->name('about');
 Route::get('/writeforus', 'PagesController@about')->name('writeforus');
 Route::get('/contact', 'PagesController@contact')->name('contact');
+Route::post('/contact', 'PagesController@store')->name('saveContactMsg');
 
 //admin routes will be prefixed with admin and folowed by their section
 Route::prefix('admin')->middleware('blockedUsers')->group(function(){
@@ -138,7 +139,7 @@ Route::prefix('episodes')->group(function(){
 //categories routes
 Route::prefix('categories')->group(function(){
     Route::get('/', 'Blog\CategoriesController@index')->name('blogCategoriehome');
-    Route::get('/{id}-{title}', 'Blog\CategoriesController@show')->name('blogCategorydetail');
+    Route::get('/{category}-{title}', 'Blog\CategoriesController@show')->name('blogCategorydetail');
 });
 
 Route::get('/imissopeyemi', 'Blog\SeriesController@missopeyemi')->name('missopeyemi');

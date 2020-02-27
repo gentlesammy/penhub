@@ -7,6 +7,7 @@ use App\Series;
 use App\Category;
 use App\Episode;
 use App\Profile;
+use App\Message;
 class PagesController extends Controller
 {
     //fetch first four episode, series, and all categories with number
@@ -41,4 +42,19 @@ class PagesController extends Controller
     public function contact(){
         return view('blog.contact');
     }
-}
+
+    public function store(Request $request){
+        $data = request()->validate([
+            'name'          => 'required|min:5',
+            'email'          => 'required|min:5|email|max:50',
+            'phone'          => 'required|min:11|max:11',
+            'messages'          => 'required|min:20',
+        ]);
+
+        $msg = new Message;
+        $msg->create($data);
+        return redirect(Route('contact'))
+        ->with('flash_message', 'Your Message has been received, expect from us soonest')->with('flash_type', 'alert-success');
+
+    }
+}//end of class

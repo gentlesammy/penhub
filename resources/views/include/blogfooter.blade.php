@@ -28,9 +28,9 @@
                     <h6>Follow Us</h6>
                     <p>Get Our Posts Regularly through our social platforms</p>
                     <ul class="social-links list unstyle">
-                        <li><a href="http://facebook.com/psalmsam" target="_new"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                        <li><a href="https://twitter.com/gentlesammy84" target="_new"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                        <li class="social-link"><a href="https://www.instagram.com/psalmsam84/?hl=en" target="_new"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                        <li><a href="https://web.facebook.com/penhubng" target="_new"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="https://twitter.com/hub_pen" target="_new"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li class="social-link"><a href="https://www.instagram.com/penhubng" target="_new"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
                         <li class="social-link"><a href="https://wa.me/2348060913903?text=official%20message"><i class="fa fa-whatsapp" aria-hidden="true"></i></a></li>
                     </ul>
                 </div>

@@ -68,10 +68,13 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function following(){
-        return $this->belongsToMany(Series::class);
+        return $this->belongsTo(Follow::class);
     }
 
+    public function application(){
 
+            return $this->belongsTo('Application::class');
+    }
 
 
 }

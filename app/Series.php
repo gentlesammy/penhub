@@ -9,6 +9,11 @@ class Series extends Model
     //
     protected $table ="series";
 
+    public static function getSeriesname($id){
+        $serie = Series::findOrFail($id);
+        return $serie->title;
+    }
+
     //relationship with user
     public function user(){
         return $this->belongsTo(User::class);
@@ -31,7 +36,7 @@ class Series extends Model
     //accessor for date created for series
 
     public function followers(){
-        return $this->belongsToMany(Users::class);
+        return $this->hasMany(Follow::class);
     }
 
     public function episodesall()

@@ -33,21 +33,13 @@
                         <p class="story">
                             {{$episode->body}}
                         </p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                        <p class="text-center lead">Share <span> <i class="fa fa-share" aria-hidden="true"></i>    </span></p>
+                        <ul class="social-links list unstyle">
+                            <li><a href="http://facebook.com/psalmsam" target="_new"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li><a href="https://twitter.com/gentlesammy84" target="_new"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                            <li class="social-link"><a href="https://www.instagram.com/psalmsam84/?hl=en" target="_new"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                            <li class="social-link"><a href="https://wa.me/2348060913903?text=official%20message"><i class="fa fa-whatsapp" aria-hidden="true"></i></a></li>
+                        </ul>
                     </div>
                     <!--This div includes the author and other sidebar features -->
                     <div class="author">
@@ -82,12 +74,54 @@
                         @endforeach
                     </div>
                     <div class="commentbox">
-                        Latest Comments
+                        <h5>LATEST COMMENTS ({{$comments->count()}})</h5>
+                        @if ($comments->count() > 0)
+                            <!--list of available comments -->
+                            @foreach ($comments as $comment)
+                                <div class="commentboxx">
+                                    <div class="userimgarea">
+                                        @if($comment->user->profile)
+                                            <img src="/img/profile/{{$comment->user->profile->image ?? 'defaultprofile.png'}}" alt="{{$comment->user->profile->name}}" class="img img-fluid">
+                                        @else
+                                            <img src="/img/profile/defaultprofile.png" alt="" class="img img-fluid">
+                                        @endif
+                                    </div>
+                                    <div class="textarea">
+                                        <h6 class="commentername"> {{strtoupper($comment->user->name)}}</h6>
+                                        <h6 class="commentertime"> {{$comment->created_at->format('d M Y')}} At {{$comment->created_at->format('H:i a')}}</h6>
+                                        <p class="comment" @can('update', $comment) contenteditable="true" @endcan>{{$comment->body}}</p>
+                                        @can('delete', $comment)
+                                            <button class="btn btn-danger">
+                                                Delete Comment
+                                            </button>
+                                        @endcan
+
+                                    </div>
+                                </div>
+                        @endforeach
+
+
+
+
+
+                        @else
+                            <p>No comment on this Episode Currently. Add comment below</p>
+                        @endif
 
                     </div>
                     <div class="commentform">
-                        comment form
+                        @if (auth()->user())
+
+                            @if (auth()->user()->muted == 1)
+                                <p>You are currently muted. You cant comment</p>
+                            @else
+                                <p>Comment form</p>
+                            @endif
+                        @endif
                     </div>
+                    <h1>
+
+                    </h1>
 
 
             </div>
