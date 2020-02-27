@@ -22,13 +22,13 @@ class PagesController extends Controller
         //series
         $series = Series::where('active', 1)->where('deleted', 0)->orderBy('id', 'desc')->take(4)->get();
         //profile
-        $profiles = Profile::where('anonymous', 0)->orderBy('id', 'desc')->take(4)->get();
+        //$profiles = Profile::where('anonymous', 0)->orderBy('id', 'desc')->take(4)->get();
 
         //fetch episodes
         $episodesall = Episode::where('published', 1)->where('deleted', 0)->orderBy('id', 'desc')->get();
         $episodes = Episode::where('published', 1)->where('deleted', 0)->orderBy('id', 'desc')->paginate(2);
         return view('blog.index')->with('series', $series)->with('categories', $categories)
-        ->with('episodes', $episodes)->with('episodesall', $episodesall)->with('profiles', $profiles);
+        ->with('episodes', $episodes)->with('episodesall', $episodesall);
     }
     //about us page
     public function about(){

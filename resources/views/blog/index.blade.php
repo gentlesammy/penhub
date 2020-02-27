@@ -132,25 +132,7 @@
                         @endforeach
                     </div>
 
-                    <div class="p-left p-top p-bottom p-right shortepisodebox">
-                        <h3>Latest Profiles</h3>
-                        @foreach ($profiles as $pro)
 
-                                <div class="box">
-
-                                    <img src="img/profile/{{$pro->image}}" alt="odunlade sam blog writers" class="img img-fluid">
-
-                                    <div class="textfield">
-                                        <p class="lead text-left">{{str_limit($pro->username, 20)}}</p>
-                                        <p class="text-left">
-                                            {{str_limit($pro->description, 100)}}
-
-                                        </p>
-                                    </div>
-                                </div>
-
-                        @endforeach
-                    </div>
 
 
                 </div>
