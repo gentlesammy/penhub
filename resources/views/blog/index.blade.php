@@ -62,24 +62,7 @@
 
                     <!--double story box-->
                     <h2 class="text-center p-bottom mt-5">Latest Episodes</h2>
-                    <div class="ds-box epibox">
-                        @foreach ($episodes as $epi)
-                        <div class="box ds-box1" style="flex:1;">
-                            <div class="img-box" style="height:300px; Overflow:hidden padding:10px;">
-                                <img src="./img/episodes/{{$epi->feature}}" alt="odunlade sam blog" class="img img-fluid">
-                            </div>
-                            <div class="textbox">
-                                <a href="/categories/{{$epi->Series->Category->id}}-{{$epi->Series->Category->title}}" class="btn-sudo" title="Category">{{$epi->Series->Category->title}}</a> &nbsp; Published: {{$epi->created_at}}
-                            <h2>{{$epi->title}}</h2>
-                                <p>
-                                    {{str_limit($epi->body, 220)}}
-                                    <a href="{{Route('blogEpisodedetail', ['slug'=> $epi->slug])}}" class="btnone">Read Episode</a>
-                                </p>
-                            </div>
 
-                        </div>
-                        @endforeach
-                    </div>
 
                 </div>
                 <!--static about blogger template. each blogpost will have about its author-->
@@ -112,25 +95,7 @@
                         @endforeach
                     </div>
 
-                    <div class="p-left p-top p-bottom p-right shortepisodebox">
-                        <h3>Latest Episodes</h3>
-                        @foreach ($episodesall as $epi)
-                            <a href="{{Route('blogEpisodedetail', ['slug'=>$epi->slug])}}">
-                                <div class="box">
 
-                                    <img src="./img/episodes/{{$epi->feature}}" alt="odunlade sam blog" class="img img-fluid">
-
-                                    <div class="textfield">
-                                        <p class="lead text-left">{{str_limit($epi->title, 20)}}</p>
-                                        <p class="text-left">
-                                            {{str_limit($epi->body, 50)}}
-
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
-                        @endforeach
-                    </div>
 
 
 

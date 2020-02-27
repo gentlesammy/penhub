@@ -25,10 +25,9 @@ class PagesController extends Controller
         //$profiles = Profile::where('anonymous', 0)->orderBy('id', 'desc')->take(4)->get();
 
         //fetch episodes
-        $episodesall = Episode::where('published', 1)->where('deleted', 0)->orderBy('id', 'desc')->get();
-        $episodes = Episode::where('published', 1)->where('deleted', 0)->orderBy('id', 'desc')->paginate(2);
-        return view('blog.index')->with('series', $series)->with('categories', $categories)
-        ->with('episodes', $episodes)->with('episodesall', $episodesall);
+        //$episodesall = Episode::where('published', 1)->where('deleted', 0)->orderBy('id', 'desc')->get();
+        //$episodes = Episode::where('published', 1)->where('deleted', 0)->orderBy('id', 'desc')->paginate(2);
+        return view('blog.index')->with('series', $series)->with('categories', $categories);
     }
     //about us page
     public function about(){
