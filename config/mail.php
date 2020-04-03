@@ -55,10 +55,8 @@ return [
     |
     */
 
-    'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'psalmsam84@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'Samuel Odun'),
-    ],
+    'from' => ['address' => 'info@penhub.com.ng', 'name' => 'PenHub'],
+    'reply_to' => ['address' => 'info2@penhub.com.ng', 'name' => 'PenHub'],
 
     /*
     |--------------------------------------------------------------------------

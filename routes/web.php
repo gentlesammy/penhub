@@ -1,4 +1,5 @@
 <?php
+use App\Mail\AuthorNotify;
 
 /*
 |--------------------------------------------------------------------------
@@ -10,12 +11,14 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+//test
 //blog routes writeforus
 Route::get('/', 'PagesController@index')->name('blogindex');
 Route::get('/about', 'PagesController@about')->name('about');
 Route::get('/writeforus', 'PagesController@about')->name('writeforus');
 Route::get('/contact', 'PagesController@contact')->name('contact');
-Route::post('/contact', 'PagesController@store')->name('saveContactMsg');
+Route::post('/contact', 'PagesController@store')->middleware('auth')->name('saveContactMsg');
 
 //admin routes will be prefixed with admin and folowed by their section
 Route::prefix('admin')->middleware('blockedUsers')->group(function(){
@@ -107,33 +110,78 @@ Route::prefix('admin')->middleware('blockedUsers')->group(function(){
 
 
 
-
+Auth::routes();
 Auth::routes(['verify' => true]);
 
-//admin route
+//profile route
 Route::get('/home', 'HomeController@index')->name('home');
 //Authenticated users route. three people can come in here; Super-Admin, Admin and Writer, however everyone can asscess, public profile of a writer
 Route::prefix('profile')->middleware('blockedUsers')->group(function(){
-    Route::get('/', 'ProfilesController@index')->name('profilehome');
-    Route::get('/create', 'ProfilesController@create')->name('createProfile');
-    Route::post('/create', 'ProfilesController@store')->name('storeProfile');
-    Route::get('/detail/{username}/{name}', 'ProfilesController@show')->name('viewProfile');
-    Route::get('/edit/{profile}', 'ProfilesController@edit')->name('editProfile');
-    Route::patch('/edit/{profile}', 'ProfilesController@update')->name('updateProfile');
+    Route::get('/', 'Profile\ProfilesController@index')->name('profilehome');
+    Route::get('/create', 'Profile\ProfilesController@create')->name('createProfile');
+    Route::post('/create', 'Profile\ProfilesController@store')->name('storeProfile');
+    Route::get('/detail/{username}/{name}', 'Profile\ProfilesController@show')->name('viewProfile');
+    Route::get('/edit/{profile}', 'Profile\ProfilesController@edit')->name('editProfile');
+    Route::patch('/edit/{profile}', 'Profile\ProfilesController@update')->name('updateProfile');
+    Route::get('/visibility/{profile}', 'Profile\ProfilesController@visibility')->name('viewProfileVissibility');
+    Route::get('/messageadmin', 'Profile\ProfilesController@messageadmin')->name('messageAdmin');
 
 });
 
-//series routes
+
+//user owned series
+Route::prefix('pseries')->middleware('blockedUsers')->group(function(){
+    Route::get('/', 'Profile\SeriesController@index')->name('profileserieshome');
+    Route::get('/create', 'Profile\SeriesController@create')->name('profileseriescreate');
+    Route::post('/create', 'Profile\SeriesController@store')->name('profileseriesstore');
+    Route::get('/detail/{series}', 'Profile\SeriesController@show')->name('profileseriesshow');
+    Route::get('/edit/{series}', 'Profile\SeriesController@edit')->name('profileseriesedit');
+    Route::patch('/edit/{series}', 'Profile\SeriesController@update')->name('profileseriesupdate');
+});//end of user owned series
+
+//user owned episode
+Route::prefix('pepisodes')->middleware('blockedUsers')->group(function(){
+    Route::get('/', 'Profile\EpisodesController@index')->name('profileepisodehome');
+    Route::get('/create', 'Profile\EpisodesController@create')->name('profileepisodecreate');
+    Route::post('/create', 'Profile\EpisodesController@store')->name('profileepisodestore');
+    Route::get('/detail/{slug}', 'Profile\EpisodesController@show')->name('profileepisodeshow');
+    Route::get('/edit/{episode}-{slug}', 'Profile\EpisodesController@edit')->name('profileepisodeedit');
+    Route::patch('/edit/{episode}-{slug}', 'Profile\EpisodesController@update')->name('profileepisodeupdate');
+    Route::get('/publish/{id}-{slug}', 'Profile\EpisodesController@publishPost');
+    Route::get('/unpublish/{id}-{slug}', 'Profile\EpisodesController@unPublishPost');
+});//end of user owned episode
+
+
+//user owned notifications
+Route::prefix('notification')->middleware('blockedUsers')->group(function(){
+    Route::get('/', 'Profile\NotificationController@index')->name('profilenotificationhome');
+    Route::get('/unread', 'Profile\NotificationController@unread')->name('profilenotificationunread');
+    Route::get('/detail/{notification}', 'Profile\NotificationController@show')->name('profilenotificationshow');
+});//end of user owned series
+
+//user owned Message
+Route::prefix('mail')->middleware('blockedUsers')->group(function(){
+    Route::get('/', 'Profile\InMessagesController@index')->name('profileemailhome');
+    Route::get('/sent', 'Profile\InMessagesController@sent')->name('profileemailsent');
+    Route::get('/create', 'Profile\InMessagesController@create')->name('profileemailcreate');
+    Route::post('/create', 'Profile\InMessagesController@store')->name('profileemailstore');
+    Route::get('/detail/{inMessage}', 'Profile\InMessagesController@show')->name('profileemailshow');
+});//end of user owned series
+
+
+//blog series routes
 Route::prefix('series')->group(function(){
     Route::get('/', 'Blog\SeriesController@index')->name('blogserieshome');
     Route::get('/{id}-{title}', 'Blog\SeriesController@show')->name('blogseriesdetail');
-    Route::post('/follow/{user}', 'FollowController@store')->name('followroute');
+    Route::post('/follow/{series}', 'FollowController@store')->name('followroute');
 });
 
 //episodes routes
 Route::prefix('episodes')->group(function(){
     Route::get('/', 'Blog\EpisodesController@index')->name('blogEpisodehome');
     Route::get('/{slug}', 'Blog\EpisodesController@detail')->name('blogEpisodedetail');
+    Route::post('/{slug}', 'Blog\CommentsController@store')->name('blogSaveComments');
+    Route::post('/delete/{comment}', 'Blog\CommentsController@delete')->name('blogDeleteComments');
 });
 
 //categories routes
@@ -143,3 +191,5 @@ Route::prefix('categories')->group(function(){
 });
 
 Route::get('/imissopeyemi', 'Blog\SeriesController@missopeyemi')->name('missopeyemi');
+
+

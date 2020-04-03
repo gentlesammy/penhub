@@ -60,7 +60,8 @@
 
                       <div class="form-group px-5">
                         <label for="exampleFormControlTextarea1">Series Summary</label>
-                        <textarea class="form-control"  rows="5" name="summary">{{old('summary')}}</textarea>
+
+                        <textarea class="form-control" id="summary-ckeditor"  rows="5" name="summary">{{old('summary')}}</textarea>
                         <p class="text-danger">
                             @error('summary')
                                 {{$message}}

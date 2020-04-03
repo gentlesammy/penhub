@@ -20,14 +20,15 @@ class PagesController extends Controller
                      ->orderBy('category_count', 'desc')
                      ->get();
         //series
-        $series = Series::where('active', 1)->where('deleted', 0)->orderBy('id', 'desc')->take(4)->get();
+        $series = Series::has('episodes')->where('active', 1)->where('deleted', 0)->where('coverpage', 1)->orderBy('id', 'desc')->take(4)->get();
         //profile
-        //$profiles = Profile::where('anonymous', 0)->orderBy('id', 'desc')->take(4)->get();
+        $profiles = Profile::where('anonymous', 0)->orderBy('id', 'desc')->take(4)->get();
 
         //fetch episodes
-        //$episodesall = Episode::where('published', 1)->where('deleted', 0)->orderBy('id', 'desc')->get();
-        //$episodes = Episode::where('published', 1)->where('deleted', 0)->orderBy('id', 'desc')->paginate(2);
-        return view('blog.index')->with('series', $series)->with('categories', $categories);
+        $episodesall = Episode::where('published', 1)->where('deleted', 0)->orderBy('id', 'desc')->get();
+        $episodes = Episode::where('published', 1)->where('deleted', 0)->where('coverpage', 1)->orderBy('id', 'desc')->paginate(2);
+        return view('blog.index')->with('series', $series)->with('categories', $categories)
+        ->with('episodes', $episodes)->with('episodesall', $episodesall)->with('profiles', $profiles);
     }
     //about us page
     public function about(){

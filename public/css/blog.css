@@ -48,6 +48,14 @@ img {
     vertical-align: middle;
     border-style: none;
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-transform: capitalize;
+}
 
 .container {
     width: 100%;
@@ -137,6 +145,9 @@ p-bottom {
     transition: 1s;
 }
 .navarea .navbar .nav li a:hover {
+    color: royalblue;
+}
+.navarea .navbar .nav li .active {
     color: royalblue;
 }
 
@@ -690,7 +701,10 @@ footer .falsefooter h6 {
     box-shadow: 0px 10px 14px 0px rgba(0, 0, 0, 0.25),
         0 5px 5px 0px rgba(0, 0, 0, 0.22) !important;
 }
-
+.blogscontainer .box .imgpart {
+    max-height: 200px;
+    overflow: hidden;
+}
 .blogscontainer .box .textpart {
     padding: 10px;
     color: white;
@@ -881,6 +895,37 @@ footer .falsefooter h6 {
 .commentbox .textarea {
     grid-column: 4/13;
     width: 100%;
+}
+.commentform form div {
+    box-shadow: none !important;
+}
+
+/* phone screen style */
+@media (max-width: 640px) {
+    .episodebox .episode {
+        width: 100%;
+        grid-column: 1/-1;
+    }
+    .episodebox .author {
+        display: none;
+    }
+    .episodebox .commentbox {
+        width: 100%;
+        grid-column: 1/-1;
+    }
+    .episodebox div {
+        padding: 10px;
+        background: #fff;
+        box-shadow: none;
+        text-align: justify;
+        font-size: 0.9em;
+    }
+
+    .episodebox .commentform {
+        width: 100%;
+        grid-column: 1/-1;
+        z-index: 100;
+    }
 }
 /*
 ######################################################
@@ -1157,5 +1202,60 @@ footer .falsefooter h6 {
 /*
 ######################################################
     contact us styling ends here
+######################################################
+*/
+
+/*
+######################################################
+    login page  styling starts here
+######################################################
+*/
+.authsection {
+    background-color: #000;
+    background-image: url("../img//black-pen-near-iphone-and-apple-magic-keyboard-934062.jpg");
+    padding-top: 0px;
+    margin-top: 0px;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-content: center;
+    align-content: center;
+}
+.authsection h3 {
+    width: 100%;
+    grid-column: 1/-1;
+    margin-top: 20px;
+    color: black !important;
+    font-weight: 900;
+}
+.authsection p {
+    width: 100%;
+    grid-column: 1/-1;
+    color: black !important;
+}
+.loginform {
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+    width: 100%;
+    grid-column: 1/-1;
+}
+.authsection .card {
+    background: #000;
+    font-weight: 600;
+}
+
+.authsection .card label {
+    color: white;
+}
+.regform {
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+    width: 100%;
+    grid-column: 1/-1;
+}
+
+/*
+######################################################
+    login page  styling ends here
 ######################################################
 */

@@ -18,13 +18,14 @@ class Episode extends Model
         return $this->hasMany(Comment::class);
     }
 
-
-    //rel with comments
-  /*  public function comments()
-    {
-        return $this->hasMany(Comment::class);
+    public function published(){
+        if($this->published == 0){
+            return "Not Published";
+        }else{
+            return "Published";
+        }
     }
-*/
 
+    //turn guraded off
     protected $guarded = [];
 }

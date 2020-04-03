@@ -54,7 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     public function series(){
-      return $this->hasMany(Series::class);
+      return $this->hasMany(Series::class)->orderBy('created_at', 'desc')->take(10);
     }
 
     public function comments(){
@@ -68,13 +68,65 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function following(){
-        return $this->belongsTo(Follow::class);
+        return $this->belongsToMany(series::class);
     }
 
     public function application(){
 
             return $this->belongsTo('Application::class');
     }
+
+
+    //inmessages relationship
+    public function Inmessagesent(){
+        return $this->hasMany(inMessages::class);
+    }
+
+    //get all episodes of a user
+    public function episodes(){
+        return $this->hasManyThrough(Episode::class, Series::class);
+    }
+
+    /*  InMessage sending system relationship  */
+    //When a user  send a InMessage
+    public function sent()
+    {
+        return $this->hasMany(InMessage::class, 'sender_id');
+    }
+
+    // when a  user can  receives a InMessage
+    public function received()
+    {
+        return $this->hasMany(InMessage::class, 'sent_to_id')->orderBy('created_at', 'desc');
+    }
+
+       // get unread message list for a user
+       public function unreadmessage()
+       {
+           return $this->hasMany(InMessage::class, 'sent_to_id')->where('read', 0)->orderBy('created_at', 'desc');
+       }
+
+       // get read message list for a user
+       public function readmessage()
+       {
+           return $this->hasMany(InMessage::class, 'sent_to_id')->where('read', 1)->orderBy('created_at', 'desc');
+       }
+
+       //convert user role code to word
+       public function getUserrole(){
+           if($this->role === 1){
+                return 'Reader';
+           }elseif($this->role === 2){
+                return 'Writer';
+           }elseif($this->role === 3){
+                return 'Moderator';
+           }elseif($this->role === 4){
+                return 'Admin';
+           }else{
+                return 'Editor';
+           }
+
+       }
 
 
 }

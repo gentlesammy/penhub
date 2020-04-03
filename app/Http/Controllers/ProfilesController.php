@@ -1,18 +1,21 @@
 <?php
-
+/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+    NOT IN USE
+  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+*/
 namespace App\Http\Controllers;
 
 use App\Profile;
 use Illuminate\Http\Request;
-
+use App\User;
 class ProfilesController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware(['auth', 'password.confirm']);
+        $this->middleware(['auth', 'verified', 'password.confirm']);
         $this->middleware('blockedUsers');
-
+        //writersandadminonly
     }
 
 
@@ -24,6 +27,7 @@ class ProfilesController extends Controller
     public function index()
     {
         //
+        $this->authorize('create', auth()->user());
         return view('profile.index');
     }
 
@@ -71,7 +75,7 @@ class ProfilesController extends Controller
          $pro->image            = $profileImage;
          $pro->user_id          = auth()->user()->id;
          $pro->save();
-         return redirect(Route('viewProfile'))
+         return redirect(Route('viewProfile', ['username'=>$pro->username]))
         ->with('flash_message', 'Profile Created. Welcome to PenHub officially')->with('flash_type', 'alert-success');
     }
 
@@ -83,7 +87,7 @@ class ProfilesController extends Controller
      */
     public function show(Profile $username)
     {
-        $this->authorize('update', $username);
+        $this->authorize('view', $username);
         return view('profile.view', compact('username'));
     }
 

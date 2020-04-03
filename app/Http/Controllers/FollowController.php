@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\User;
+use App\Series;
 use Illuminate\Http\Request;
 
 class FollowController extends Controller
@@ -12,7 +13,8 @@ class FollowController extends Controller
         $this->middleware('auth');
     }
     //store followers
-    public function store(User $user){
-        return json_encode($user->name);
+    public function store(Series $series){
+
+        return auth()->user()->following()->toggle($series);
     }
 }

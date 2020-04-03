@@ -33,15 +33,23 @@ class Series extends Model
     {
         return $this->hasMany(Episode::class);
     }
+
+     //relationship with publishedEpisode
+     public function publishedEpisodes()
+     {
+         return $this->hasMany(Episode::class)->where('published', 1);
+     }
     //accessor for date created for series
 
+
     public function followers(){
-        return $this->hasMany(Follow::class);
+        return $this->belongsToMany(User::class);
     }
 
     public function episodesall()
     {
         return $this->hasMany(Episode::class)->orderBy('created_at', 'desc');
+
     }
 
 

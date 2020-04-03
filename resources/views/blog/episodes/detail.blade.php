@@ -31,15 +31,18 @@
                         <h2>{{$episode->title}}</h2>
 
                         <p class="story">
-                            {{$episode->body}}
+                            {!!$episode->body!!}
                         </p>
                         <p class="text-center lead">Share <span> <i class="fa fa-share" aria-hidden="true"></i>    </span></p>
                         <ul class="social-links list unstyle">
-                            <li><a href="http://facebook.com/psalmsam" target="_new"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                            <li><a href="https://twitter.com/gentlesammy84" target="_new"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                            <li><a href="https://www.facebook.com/sharer/sharer.php?u=https://www.penhub.com.ng/episodes/{{$episode->slug}}" target="_new"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li>
+                                 <a href="https://twitter.com/intent/tweet?text={{$episode->title}}&url=https://www.penhub.com.ng/episodes/{{$episode->slug}}&"><i class="fa fa-twitter" aria-hidden="true"></i></a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            </li>
                             <li class="social-link"><a href="https://www.instagram.com/psalmsam84/?hl=en" target="_new"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
                             <li class="social-link"><a href="https://wa.me/2348060913903?text=official%20message"><i class="fa fa-whatsapp" aria-hidden="true"></i></a></li>
                         </ul>
+
                     </div>
                     <!--This div includes the author and other sidebar features -->
                     <div class="author">
@@ -55,6 +58,7 @@
                             <p class="text-justify">
                                 {{$episode->series->user->profile->description}}
                             </p>
+
                             @endif
 
                         @else
@@ -89,23 +93,20 @@
                                     <div class="textarea">
                                         <h6 class="commentername"> {{strtoupper($comment->user->name)}}</h6>
                                         <h6 class="commentertime"> {{$comment->created_at->format('d M Y')}} At {{$comment->created_at->format('H:i a')}}</h6>
-                                        <p class="comment" @can('update', $comment) contenteditable="true" @endcan>{{$comment->body}}</p>
+                                        <p class="comment" @can('update', $comment) contenteditable="true" @endcan>{!!$comment->body!!}</p>
                                         @can('delete', $comment)
-                                            <button class="btn btn-danger">
-                                                Delete Comment
+                                            <button class="btn btn-danger deletecomment"  id="deletecomment" data-commentId={{$comment->id}}>
+                                                X
                                             </button>
+                                            <meta name="csrf-token" content="{{ csrf_token() }}" id="metadaddy">
                                         @endcan
 
                                     </div>
                                 </div>
                         @endforeach
 
-
-
-
-
                         @else
-                            <p>No comment on this Episode Currently. Add comment below</p>
+                            <p>No comment on this Episode Currently. Be the first to comment</p>
                         @endif
 
                     </div>
@@ -115,8 +116,27 @@
                             @if (auth()->user()->muted == 1)
                                 <p>You are currently muted. You cant comment</p>
                             @else
-                                <p>Comment form</p>
+
+                                <form action="{{Route('blogSaveComments', ['slug'=>$episode->id])}}" method="POST">
+                                        @csrf
+                                        <p class="pl-4">You are commenting as <strong>{{auth()->user()->name}}</strong></p>
+                                            <input type="hidden" name="episode_id" value="{{$episode->id}}">
+                                        <div class="form-group">
+                                            <textarea name="body" id="body" cols="30" rows="10" class="form-control">
+                                                    {{old('body')}}
+                                            </textarea>
+                                            @error('body')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                             @enderror
+                                         </div>
+                                         <input type="submit" value="Add Comment" class="btn btn-dark ml-4">
+                                </form>
+
                             @endif
+                        @else()
+                        <p>You need to be logged in to comment</p>
                         @endif
                     </div>
                     <h1>
@@ -132,7 +152,65 @@
 @endsection
 
 @section('script')
+    <script>
 
+            window.addEventListener('DOMContentLoaded', function(){
+
+                //delete comment
+                let deletecomment = document.querySelectorAll('.deletecomment');
+                deletecomment.forEach((comdel)=>{
+                    comdel.addEventListener('click', (e)=>{
+                    e.preventDefault();
+                        let wholeComment = e.target.parentElement.parentElement;
+                        let comment =e.target.dataset.commentid;
+                        let token = document.querySelector("#metadaddy").getAttribute("content");
+
+                         //action when button is clicked
+                     fetch('/episodes/delete/'+ comment, {
+                            headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json, text-plain, */*",
+                            "X-Requested-With": "XMLHttpRequest",
+                            "X-CSRF-TOKEN": token
+                            },
+                            method: 'post',
+                            credentials: "same-origin",
+                            body: JSON.stringify({
+                                comment: comment,
+                            })
+                            })
+                     .then((response) => {
+                                return response.json();
+                        })
+                     .then((myJson) => {
+
+                                wholeComment.remove();
+                                alert(myJson);
+                     })
+                    .catch(function(error) {
+                                console.log(error);
+                    });
+
+
+
+
+                    });
+                })
+
+                //edit comment
+
+
+
+
+
+
+
+
+            });
+
+
+
+    </script>
 @endsection
 
 <!--

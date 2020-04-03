@@ -31,6 +31,7 @@ class ProfilePolicy
     public function view(User $user, Profile $Profile)
     {
         //
+        return $user->id === $Profile->user_id;
     }
 
     /**
@@ -41,7 +42,7 @@ class ProfilePolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->profile ==  '';
 
     }
 
@@ -92,4 +93,13 @@ class ProfilePolicy
     {
         //
     }
+
+    //user cannot create profile if profile for it already exist
+    public function profileExists(User $user)
+    {
+        return $user->profile == '';
+    }
+
+
+
 }

@@ -8,9 +8,15 @@
     <section class="blog-hero">
         <div class="container">
          <h1 class="text-white">{{$id->title}}</h1>
-        @auth
-            <button class="btnone followseries" data-user_id="{{auth()->user()->id}}" data-series_id="{{$id->id}}">Follow</button>
-        @endauth
+
+            @if($follows)
+                <button class="btn btn-danger unfollowseries"  data-series_id="{{$id->id}}" onclick="unfollow()">UnFollow</button>
+            @else
+                <button class="btnone followseries"  data-series_id="{{$id->id}}" onclick="follow()">Follow</button>
+            @endif
+
+
+
          <meta name="csrf-token" content="{{ csrf_token() }}" id="metadaddy">
          <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent p-0 my-2">
@@ -33,7 +39,7 @@
                         <div class="summaryarea">
                             <h5>Summary</h5>
                             <p>
-                                {{$id->summary}}
+                                {!!$id->summary!!}
                             </p>
                             <p><strong>Author: </strong> {{$id->user->name}}</p>
                             <p>
@@ -115,6 +121,7 @@
 
 
 
+
                     </div>
 
 
@@ -131,17 +138,41 @@
 
 @section('script')
 <script>
-    window.addEventListener('DOMContentLoaded', function(){
-        const ff = document.querySelector('.followseries');
-    ff.addEventListener('click', (e)=>{
-        e.preventDefault();
+
+
+    //follow button
+     const follow =()=>{
         //Select token with getAttribute
         let token = document.querySelector("#metadaddy").getAttribute("content");
-        let user_id = document.querySelector(".followseries").dataset.user_id;
-        let series_id = document.querySelector(".followseries").dataset.series_id;
-        alert (user_id);
+        let series = document.querySelector(".followseries").dataset.series_id;
+        let followseries = confirm('DO YOU WANT TO FOLLOW SERIES? You will receive email notification whenever a new episode is uploaded via email');
+        if(followseries ==true){
+            sendToController(token, series)
+            document.querySelector(".followseries").style.display = "none";
+
+        }else{
+            alert('You will not receive notification')
+        }
+    }
+
+    //unfollow button
+    const unfollow =()=>{
+        //Select token with getAttribute
+        let token = document.querySelector("#metadaddy").getAttribute("content");
+        let series = document.querySelector(".unfollowseries").dataset.series_id;
+        let followseries = confirm('DO YOU WANT TO UNFOLLOW SERIES? You will not receive email notification whenever a new episode is uploaded via email');
+        if(followseries ==true){
+            sendToController(token, series)
+            document.querySelector(".unfollowseries").style.display = "none";
+        }else{
+            alert('You will not receive notification')
+        }
+    }
+
+
+    function sendToController(token, series){
         //action when button is clicked
-                fetch('/series/follow/'+ user_id, {
+        fetch('/series/follow/'+ series, {
                             headers: {
                             "Content-Type": "application/json",
                             "Accept": "application/json, text-plain, */*",
@@ -151,21 +182,31 @@
                             method: 'post',
                             credentials: "same-origin",
                             body: JSON.stringify({
-                                user_id: user_id,
-                                series_id:series_id
+                                series:series
                             })
                             })
                             .then((response) => {
                                 return response.json();
                             })
                             .then((myJson) => {
-                                console.log(myJson);
+                                if(myJson.message == 'Unauthenticated.'){
+                                    window.location = "/login"
+                                }else{
+
+                                    location.reload();
+                                }
                             })
                  .catch(function(error) {
-                                console.log(error);
+                                    if(error.response.status == 401){
+                                        window.location = "/login"
+                                    }
                                 });
-    });
-    })
+    }
+
+
+
+
+
 
 </script>
 @endsection

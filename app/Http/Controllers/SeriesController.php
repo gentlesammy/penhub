@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Notifications\NewSeriesNotification;
+use App\Events\SeriesCreatedEvent;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 use App\Category;
 use App\Rating;
 use App\User;
 use App\Series;
-use App\Episodes;
+use App\Episode;
 class SeriesController extends Controller
 
 {
@@ -59,11 +61,16 @@ class SeriesController extends Controller
             'summary'         => 'required|min:50|max:2000',
             'feature'         => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
        ]);
+
+
+
+
             $data['user_id']= auth()->user()->id;
             if ($files = $request->file('feature')) {
                 $destinationPath = 'img/series/'; // upload path
                 $featureImage =str_slug($request->title) .date('YmdHis') . "Penhub" . "." . $files->getClientOriginalExtension();
                 $files->move($destinationPath, $featureImage);
+                $img = Image::make($destinationPath.$featureImage)->resize(300, 300);
              }
              $data['feature']= $featureImage;
              $series = new Series;
@@ -73,9 +80,18 @@ class SeriesController extends Controller
              $series->summary           = request('summary');
              $series->feature           = $featureImage;
              $series->user_id           = auth()->user()->id;
+
              $series->save();
+
+             //notify admin a new series has been created || use event to do this
+                $user = User::where('role', 5)->first();
+                $user->notify(new NewSeriesNotification($series));
+
+
              return redirect(Route('adseriesIndex'))
         ->with('flash_message', 'Series Created')->with('flash_type', 'alert-success');
+
+
 
 
     }

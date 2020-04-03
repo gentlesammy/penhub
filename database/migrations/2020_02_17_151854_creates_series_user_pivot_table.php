@@ -13,7 +13,7 @@ class CreatesSeriesUserPivotTable extends Migration
      */
     public function up()
     {
-        Schema::create('series_users', function (Blueprint $table) {
+        Schema::create('series_user', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('series_id');

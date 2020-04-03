@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'ownerOnly'=> \App\Http\Middleware\Ownercheck::class,
         'superAdminOnly'=> \App\Http\Middleware\SuperAdminRole::class,
         'blockedUsers'=> \App\Http\Middleware\BlockedUsers::class,
+        'writersandadminonly'=> \App\Http\Middleware\WriterAdminOnly::class,
     ];
 
     /**

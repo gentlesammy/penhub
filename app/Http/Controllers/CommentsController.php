@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Mail;
+use Auth;
+use App\Mail\CommentReceivedMail;
 use Illuminate\Http\Request;
 use App\Comment;
+use App\Episode;
 class CommentsController extends Controller
 {
     /**
@@ -44,7 +47,28 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //send mail to author of the episode
+        /*
+        $episode = Episode::findOrFail($request->episode);
+        $episodeTitle= $episode->title;
+        $episodeLink = $episode->slug;
+        $userdetcomment =[
+            'name' => auth()->user()->name,
+            'email' => auth()->user()->email,
+            'comment'=> $request->body,
+            'episodeTitle'=> $episode->title,
+            'episodeLink'=> $episode->slug,
+        ];
+        $authoremail = $episode->series->user->email;
+
+        \Mail::to($authoremail)->send(new CommentReceivedMail($userdetcomment));
+
+        return view()->back();
+
+        */
+
+
+
     }
 
     /**

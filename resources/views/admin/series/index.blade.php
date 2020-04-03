@@ -38,7 +38,7 @@
                                     <tr>
                                     <td>{{$sn++}}</td>
                                     <td>{{$seri->title}}</td>
-                                    <td>{{$seri->summary}}</td>
+                                    <td>{!!$seri->summary!!}</td>
                                     <td>{{$seri->Category->title}}</td>
                                     <td>{{$seri->User->name}}</td>
                                     <td class="d-flex align-items-center h-100">

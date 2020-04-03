@@ -5,7 +5,10 @@
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="/profile" class="nav-link">Home</a>
+        <a href="/profile" class="nav-link">Dashboard</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/" class="nav-link">PenHub</a>
       </li>
       @if(auth()->user()->role < 4)
       <li class="nav-item d-none d-sm-inline-block">
@@ -14,110 +17,93 @@
       @endif
     </ul>
 
-    <!-- SEARCH FORM
-    <form class="form-inline ml-3">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-      </div>
-    </form>
-    -->
     <!-- Right navbar links -->
-    @if(auth()->user()->role > 4)
+    @if(in_array(auth()->user()->role, [1, 2, 3, 4, 5]))
     <ul class="navbar-nav ml-auto">
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
+          @if (auth()->user()->unreadmessage->count() > 0)
+          <span class="badge badge-danger navbar-badge">{{auth()->user()->unreadmessage->count()}}</span>
+          @else
+
+          @endif
+
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Brad Diesel
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Call me whenever you can...</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
+            <span class="dropdown-item dropdown-header">{{auth()->user()->unreadmessage->count()}} Message(s)</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  John Pierce
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">I got your message bro</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
+            @foreach (auth()->user()->unreadmessage as $msg)
+                <a href="{{Route('profileemailshow', ['inMessage'=>$msg->id])}}" class="dropdown-item bg-primary">
+                    <!-- Message Start -->
+                    <div class="media">
+                    <div class="media-body">
+                        <h3 class="dropdown-item-title">
+                        {{$msg->sender->name}}
+                        </h3>
+                        <p class="text-sm">{{str_limit($msg->body, 30)}}</p>
+                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> {{$msg->created_at->diffForHumans()}}</p>
+                    </div>
+                    </div>
+                    <!-- Message End -->
+                </a>
+                <div class="dropdown-divider"></div>
+            @endforeach
+
+            @foreach (auth()->user()->readmessage as $msg)
+                <a href="{{Route('profileemailshow', ['inMessage'=>$msg->id])}}" class="dropdown-item">
+                    <!-- Message Start -->
+                    <div class="media">
+                    <div class="media-body">
+                        <h3 class="dropdown-item-title">
+                            {{$msg->sender->name}}
+                        </h3>
+                        <p class="text-sm">{{str_limit($msg->body, 30)}}</p>
+                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> {{$msg->created_at->diffForHumans()}}</p>
+                    </div>
+                    </div>
+                    <!-- Message End -->
+                </a>
+                <div class="dropdown-divider"></div>
+            @endforeach
+
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Nora Silvester
-                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">The subject goes here</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+          <a href="{{Route('profileemailhome')}}" class="dropdown-item dropdown-footer">See All Messages</a>
         </div>
       </li>
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          @if (auth()->user()->UnreadNotifications->count()>0)
+            <span class="badge badge-info navbar-badge">{{auth()->user()->UnreadNotifications->count()}} </span>
+          @endif
+
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
+          <span class="dropdown-item dropdown-header">{{auth()->user()->UnreadNotifications->count()}} Notification(s)</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
-          </a>
+          @foreach (auth()->user()->UnreadNotifications as $item)
+            <a href="#" class="dropdown-item">
+                <i class="fas fa-envelope mr-2"></i> {{$item->data['title']}}
+                <span class="float-right text-muted text-sm">{{$item->created_at->diffForHumans()}}</span>
+            </a>
+            <div class="dropdown-divider"></div>
+
+          @endforeach
+
+          @foreach (auth()->user()->readNotifications as $item)
+            <a href="#" class="dropdown-item">
+                <i class="fas fa-envelope mr-2"></i> {{$item->data['title']}}
+                <span class="float-right text-muted text-sm">{{$item->created_at->diffForHumans()}}</span>
+            </a>
+            <div class="dropdown-divider"></div>
+
+          @endforeach
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+          <a href="{{Route('profilenotificationhome')}}" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
-          <i class="fas fa-th-large"></i>
-        </a>
       </li>
     </ul>
     @endif

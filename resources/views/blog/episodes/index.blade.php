@@ -36,7 +36,7 @@
                                     <h5>{{$epi->title}}</h5>
                                     <p class="published">Published: {{$epi->created_at->format('d M, Y')}}</p>
                                     <p class="series">Series: <a href="{{Route('blogseriesdetail', ['id'=>$epi->series->id, 'title'=>str_slug($epi->series->title)] )}}">{{$epi->series->title}}</a></p>
-                                    <p class="summary">{{str_limit($epi->body, 100)}}</p>
+                                    <p class="summary">{!!str_limit($epi->body, 100)!!}</p>
                                     <a href="{{Route('blogEpisodedetail', $epi->slug)}}" class="btn btn-link">Read Episode</a>
 
                                 </div>
@@ -62,7 +62,7 @@
                     <div class="boxtwo">
                         <h5>Categories</h5>
                         @foreach ($categories as $cat)
-                        <p style="display:flex; flex-direction:row; justify-content:space-between; align-items:center"><a href="#" style="flex:1">{{App\Category::getCategoryname($cat->category_id)}}</a> &nbsp; <span class="badge badge-primary badge-pill" >{{$cat->category_count}}</span></p>
+                        <p style="display:flex; flex-direction:row; justify-content:space-between; align-items:center"><a href="/categories/{{$epi->Series->Category->id}}-{{$epi->Series->Category->title}}" style="flex:1">{{App\Category::getCategoryname($cat->category_id)}}</a> &nbsp; <span class="badge badge-primary badge-pill" >{{$cat->category_count}}</span></p>
 
                         @endforeach
 

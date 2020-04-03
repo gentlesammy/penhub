@@ -18,7 +18,7 @@ class EpisodePolicy
      */
     public function viewAny(User $user)
     {
-        //
+      return true;
     }
 
     /**
@@ -31,6 +31,7 @@ class EpisodePolicy
     public function view(User $user, Episode $episode)
     {
         //
+        return $user->id == $episode->series->user_id;
 
     }
 

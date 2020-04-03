@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Series;
 use App\User;
+use App\profile;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SeriesPolicy
@@ -30,7 +31,7 @@ class SeriesPolicy
      */
     public function view(User $user, Series $series)
     {
-        //
+        return $user->id == $series->user_id;
     }
 
     /**
@@ -39,9 +40,11 @@ class SeriesPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Profile $profile)
     {
         //
+        $user->id == $profile->user_id  &&
+        $user->series->count() < 1;
     }
 
     /**
@@ -55,6 +58,7 @@ class SeriesPolicy
     {
         //checking if userid is the same as series owner id
        return $user->id === $series->user_id;
+
     }
 
     /**

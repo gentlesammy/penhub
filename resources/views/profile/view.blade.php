@@ -48,7 +48,7 @@
                           <b>Series</b> <a class="float-right">{{$username->user->series->count()}}</a>
                         </li>
                         <li class="list-group-item">
-                          <b>Episodes</b> <a class="float-right">--</a>
+                          <b>Episodes</b> <a class="float-right">{{auth()->user()->episodes->count()}}</a>
                         </li>
                       </ul>
 
@@ -101,7 +101,7 @@
                                         <br>
                                         <span class="float-right">
                                             <a href="#" class="link-black text-sm">
-                                            <i class="far fa-comments mr-1"></i> Followers (5)
+                                            <i class="far fa-comments mr-1"></i> Followers ({{$series->followers->count()}})
                                             </a>
                                         </span>
                                         </p>

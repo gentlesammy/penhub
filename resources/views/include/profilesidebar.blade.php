@@ -9,12 +9,16 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-            <!--default image sgould be here, if no image -->
-          <img src="/img/defaultprofile.png" class="img-circle elevation-2" alt="User Image">
+         @if(auth()->user()->profile == null)
+            <img src="/img/defaultprofile.png" class="img-circle elevation-2" alt="User Image">
+         @else
+            <img src="/img/profile/{{auth()->user()->profile->image}}" class="img-circle elevation-2" alt="User Image">
+         @endif
         </div>
         <div class="info">
             <!--should lead to public profile -->
-          <a href="#" class="d-block">{{auth()->user()->name}}</a>
+          <a class="d-block">{{auth()->user()->name}}</a>
+          <a class="d-block">{{auth()->user()->getUserrole()}}</a>
         </div>
       </div>
 
@@ -26,7 +30,7 @@
                with font-awesome or any other icon font library -->
 
           <!-- profile set -->
-          <li class="nav-item has-treeview menu-open">
+          <li class="nav-item has-treeview  {{ Request::is('profile*') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
@@ -53,13 +57,13 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/profile/edit/{{auth()->user()->id}}" class="nav-link">
+                <a href="/profile/edit/{{auth()->user()->profile->id}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Edit Profile</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
+                <a href="{{Route('viewProfileVissibility', ['profile'=>auth()->user()->profile])}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Edit Vissibility</p>
                 </a>
@@ -74,7 +78,7 @@
             -->
           @if(in_array(auth()->user()->role, [2, 4, 5]))
           <!-- Series set -->
-          <li class="nav-item has-treeview">
+          <li class="nav-item has-treeview {{ Request::is('pseries*') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-folder"></i>
               <p>
@@ -84,13 +88,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="{{Route('profileserieshome')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>All Series</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
+                <a href="{{Route('profileseriescreate')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Create Series</p>
                 </a>
@@ -99,7 +103,7 @@
           </li>
 
           <!-- Episodes set -->
-          <li class="nav-item has-treeview">
+          <li class="nav-item has-treeview {{ Request::is('pepisode*') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
               <p>
@@ -109,13 +113,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="{{Route('profileepisodehome')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>All Episodes</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
+                <a href="{{Route('profileepisodecreate')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Create Episodes</p>
                 </a>
@@ -149,7 +153,7 @@
 
           </li>
           <!-- message set -->
-          <li class="nav-item has-treeview">
+          <li class="nav-item has-treeview {{ Request::is('mail*') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-envelope"></i>
               <p>
@@ -159,25 +163,83 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="./index.html" class="nav-link">
+                    <a href="{{Route('profileemailhome')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Inbox</p>
                     </a>
               </li>
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="{{Route('profileemailsent')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Unread</p>
+                  <p>sent</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
+                <a href="{{Route('profileemailcreate')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Archieve</p>
+                  <p>Create</p>
                 </a>
               </li>
             </ul>
           </li>
+
+          <!-- Earning set -->
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+             <i class="nav-icon fas fa-money-bill"></i>
+              <p>
+                EARNINGS
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a  class="nav-link" disabled="disabled">
+                      <i class="fas fa-lock nav-icon text-default"  style="color:gray !important;"></i>
+                      <p  style="color:gray">Earning Locked</p>
+                    </a>
+                  </li>
+               <!--
+              <li class="nav-item">
+                <a href="./index2.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Create Episodes</p>
+                </a>
+              </li>
+               -->
+            </ul>
+
+          </li>
+
+          <!-- Notification set -->
+          <li class="nav-item has-treeview {{ Request::is('notification*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link">
+             <i class="nav-icon fas fa-bell"></i>
+              <p>
+                Notifications
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{Route('profilenotificationhome')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>All Notifications</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{Route('profilenotificationunread')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Unread Notifications</p>
+                </a>
+              </li>
+
+            </ul>
+
+          </li>
+
           @endif
           <li class="nav-item">
 

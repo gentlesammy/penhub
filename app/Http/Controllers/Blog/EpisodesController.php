@@ -29,7 +29,8 @@ class EpisodesController extends Controller
 
     public function detail($slug){
         $episode = Episode::where('slug', $slug)->first();
-        $comments =$episode->comments->where('approved', 1)->where('deleted', 0)->sortByDesc('created_at');
+        $comments =$episode->comments->where('approved', 1)->where('deleted', 0)
+        ->sortByDesc('created_at')->take(10);
         $relatedepisode = Episode::where('series_id', $episode->series_id)
         ->where('published', 1)->orderBy('created_at', 'desc')->paginate(10);
         return view('blog.episodes.detail')->with('relatedepisode', $relatedepisode)
