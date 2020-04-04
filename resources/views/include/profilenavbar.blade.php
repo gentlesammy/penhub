@@ -12,7 +12,7 @@
       </li>
       @if(auth()->user()->role < 4)
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="/profile/messageadmin" class="nav-link">Message Admin</a>
+        <a href="/mail/messageadmin" class="nav-link">Message Admin</a>
       </li>
       @endif
     </ul>

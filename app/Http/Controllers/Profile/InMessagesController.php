@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Profile;
-
+use Auth;
 use App\Http\Controllers\Controller;
 use App\InMessage;
 use App\User;
@@ -54,13 +54,15 @@ class InMessagesController extends Controller
         $receiver = $this->getUserId($data['email']);
         $msg = new InMessage;
 
+        $sender = auth()->user()->id;
+        $msg = new InMessage;
         $msg->sent_to_id = $receiver;
-        $msg->sender_id = auth()->user()->id;
-        $msg->subject = $data['subject'];
-        $msg->body = $data['body'];
-        dd($msg);
-        $msg->create();
-        return   view()->back()->with('flash_message', 'Message Sent')->with('flash_type', 'alert-success');
+        Auth::user()->sent()->create([
+        'subject'    => $request->subject,
+        'body'       => $request->body,
+        'sent_to_id' => $receiver,
+        ]);
+        return  back()->with('flash_message', 'Message Sent')->with('flash_type', 'alert-success');
     }
 
     /**
@@ -127,6 +129,32 @@ class InMessagesController extends Controller
     public function getUserId($email){
         $user =   User::where('email', $email)->first();
         return $user->id;
+    }
+
+    public function messageadmincreate(Request $request)
+    {
+        return view('profile.inmessages.msgadmin');
+    }
+
+    public function messageadminupdate(Request $request)
+    {
+        $data = $request->validate([
+            'subject'   =>       'required|max:50',
+            'body'      =>       'required|max:2000'
+        ]);
+
+       $receiver = User::where('role', 5)->first()->id;
+       $sender = auth()->user()->id;
+       $msg = new InMessage;
+       $msg->sent_to_id = $receiver;
+       Auth::user()->sent()->create([
+        'subject'    => $request->subject,
+        'body'       => $request->body,
+        'sent_to_id' => $receiver,
+    ]);
+       return back()->with('flash_message', 'Message Sent, Expect Admin Reply soon')->with('flash_type', 'alert-success');
+
+
     }
 
 

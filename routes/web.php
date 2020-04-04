@@ -125,7 +125,9 @@ Route::prefix('profile')->middleware('blockedUsers')->group(function(){
     Route::patch('/edit/{profile}', 'Profile\ProfilesController@update')->name('updateProfile');
     Route::get('/visibility/{profile}', 'Profile\ProfilesController@visibility')->name('viewProfileVissibility');
     Route::get('/messageadmin', 'Profile\ProfilesController@messageadmin')->name('messageAdmin');
-
+    Route::post('/visible/visibleAnon', 'Profile\ProfilesController@visibleAnon')->name('updatevisibleAnonProfile');
+    Route::post('/visible/visiblePhone', 'Profile\ProfilesController@visiblePhone')->name('updatevisiblePhoneProfile');
+    Route::post('/visible/visibleSocial', 'Profile\ProfilesController@visibleSocial')->name('updatevisibleSocialProfile');
 });
 
 
@@ -137,6 +139,7 @@ Route::prefix('pseries')->middleware('blockedUsers')->group(function(){
     Route::get('/detail/{series}', 'Profile\SeriesController@show')->name('profileseriesshow');
     Route::get('/edit/{series}', 'Profile\SeriesController@edit')->name('profileseriesedit');
     Route::patch('/edit/{series}', 'Profile\SeriesController@update')->name('profileseriesupdate');
+    
 });//end of user owned series
 
 //user owned episode
@@ -166,6 +169,8 @@ Route::prefix('mail')->middleware('blockedUsers')->group(function(){
     Route::get('/create', 'Profile\InMessagesController@create')->name('profileemailcreate');
     Route::post('/create', 'Profile\InMessagesController@store')->name('profileemailstore');
     Route::get('/detail/{inMessage}', 'Profile\InMessagesController@show')->name('profileemailshow');
+    Route::get('/messageadmin', 'Profile\InMessagesController@messageadmincreate')->name('profileemailadmincreate');
+    Route::post('/messageadmin', 'Profile\InMessagesController@messageadminupdate')->name('profileemailadminupdate');
 });//end of user owned series
 
 

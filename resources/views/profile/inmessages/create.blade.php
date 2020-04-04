@@ -32,6 +32,13 @@
                         <div class="card card-primary card-outline">
                           <div class="card-header">
                             <h3 class="card-title">Compose New Message</h3>
+                            @if(Session::has('flash_message'))
+                            <div class="alert {{Session::get('flash_type')}} alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong>{{Session::get('flash_message')}}</strong>
+                            </div>
+
+                          @endif
                           </div>
                           <!-- /.card-header -->
 

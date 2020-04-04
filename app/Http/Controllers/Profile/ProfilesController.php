@@ -148,5 +148,36 @@ class ProfilesController extends Controller
         return view('profile.visibility');
     }
 
+     //visibleAnon
+     public function visibleAnon(Request $request){
+         
+        $profile = auth()->user()->profile;
+        $this->authorize('update', $profile);
+        $profile->anonymous = $request->anoncode;
+        $profile->update();
+        return json_encode("done");
+    }
 
+    //show phone
+    public function visiblePhone(Request $request){
+        $profile = auth()->user()->profile;
+        $this->authorize('update', $profile);
+        $profile->showphone = $request->showPhone;
+        $profile->update();
+        return json_encode("done");
+    }
+    //visibleSocial
+    public function visibleSocial(Request $request){
+        $profile = auth()->user()->profile;
+        $this->authorize('update', $profile);
+        $profile->showsocial= $request->showsocial;
+        $profile->update();
+        return json_encode("done");
+    }
+
+    public function messageadminupdate()
+    {
+        
+    }
+   
 }//end of class
